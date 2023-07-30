@@ -68,11 +68,11 @@ async function getTransactionsByInstitution(institution) {
         institution,
       }
     );
-    const accountsResponse = getAccountsByInstitution(institution);
-    if (transactionResponse.data && accountsResponse.data) {
+    const accountsResponse = await getAccountsByInstitution(institution);
+    if (transactionResponse.data && accountsResponse?.length > 0) {
       return {
         transactions: transactionResponse.data,
-        accounts: accountsResponse.data,
+        accounts: accountsResponse,
       };
     }
   } catch (error) {

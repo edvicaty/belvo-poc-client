@@ -32,7 +32,7 @@ const FormComponent = ({ values, onChange, onSubmit, disabled }) => {
         type="submit"
         disabled={disabled}
       >
-        Submit
+        {disabled ? "Loading" : "Submit"}
       </Button>
     </Form>
   );

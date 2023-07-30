@@ -14,6 +14,7 @@ const Transactions = () => {
   const [accounts, setAccounts] = useState();
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const Transactions = () => {
     }
     const fetchTransactions = async () => {
       const response = await getTransactionsByInstitution(institution);
+      console.log("onLoad");
       console.log(response);
       if (!response) {
         setShowModal(true);
@@ -54,9 +56,9 @@ const Transactions = () => {
     return;
   };
 
-  const fetchTransactions = async () => {
-    const response = await getTransactionsByInstitution();
-    setLoaded(false);
+  const fetchTransactionsWhenLoaded = async () => {
+    const response = await getTransactionsByInstitution(institution);
+    console.log("onSubmit");
     console.log(response);
     if (!response) {
       return null;
@@ -72,16 +74,18 @@ const Transactions = () => {
   };
 
   const handleSubmit = async (event) => {
+    setFormLoading(true);
     event.preventDefault();
+    await fetchTransactionsWhenLoaded();
     const response = await registerLink(
       institution,
       formValues.bankUsername,
       formValues.bankPassword
     );
     if (response) {
-      await fetchTransactions();
+      await fetchTransactionsWhenLoaded();
       setShowModal(false);
-      setLoading(false);
+      setFormLoading(false);
       return;
     }
     navigate(`/`, { replace: true });
@@ -129,46 +133,52 @@ const Transactions = () => {
               values={formValues}
               onChange={handleChange}
               onSubmit={handleSubmit}
+              disabled={formLoading}
             />
           </div>
           <Modal.Footer>
             <Button variant="secondary" onClick={onHide}>
               Return to home
             </Button>
-            <Button variant="primary" onClick={handleSubmit}>
-              Create Link
+            <Button
+              variant="primary"
+              disabled={formLoading}
+              onClick={handleSubmit}
+            >
+              {formLoading ? "Loading" : "Create Link"}
             </Button>
           </Modal.Footer>
         </Modal>
       )}
-      {transactions?.length > 0 &&
-        transactions.map((transaction) => {
-          return (
-            <Card
-              style={{
-                padding: "1rem",
-                marginTop: "1rem",
-                marginBottom: "1rem",
-              }}
-            >
-              <p>
-                <strong>{transaction.description}</strong>
-              </p>
-              <p>
-                <strong>{transaction.amount}</strong>
-              </p>
-              <p>
-                <strong>{transaction.currency}</strong>
-              </p>
-              <p>
-                <strong>{transaction.account?.type}</strong>
-              </p>
-              <p>{transaction.category}</p>
-              <p>{transaction.status}</p>
-              <p>{transaction.type}</p>
-            </Card>
-          );
-        })}
+      {transactions?.length > 0
+        ? transactions.map((transaction) => {
+            return (
+              <Card
+                style={{
+                  padding: "1rem",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                }}
+              >
+                <p>
+                  <strong>{transaction.description}</strong>
+                </p>
+                <p>
+                  <strong>{transaction.amount}</strong>
+                </p>
+                <p>
+                  <strong>{transaction.currency}</strong>
+                </p>
+                <p>
+                  <strong>{transaction.account?.type}</strong>
+                </p>
+                <p>{transaction.category}</p>
+                <p>{transaction.status}</p>
+                <p>{transaction.type}</p>
+              </Card>
+            );
+          })
+        : !loading && <div>No transactions found</div>}
     </div>
   );
 };
