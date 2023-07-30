@@ -29,6 +29,7 @@ const Transactions = () => {
     bankUsername: "",
     bankPassword: "",
   });
+  const [visibleItems, setVisibleItems] = useState(10);
   const searchParams = new URLSearchParams(location.search);
   const institution = searchParams.get("institution");
 
@@ -109,6 +110,10 @@ const Transactions = () => {
     }));
   };
 
+  const loadMoreItems = () => {
+    setVisibleItems((prevVisibleItems) => prevVisibleItems + 10);
+  };
+
   return (
     <div>
       <h1>Transactions {institution}</h1>
@@ -119,18 +124,20 @@ const Transactions = () => {
             {accounts.map((account) => {
               return (
                 <Card style={{ padding: "1rem" }}>
-                  <Card.Title>{account.category}</Card.Title>
+                  <Card.Title style={{ fontSize: "1rem", color: "blue" }}>
+                    {account.category}
+                  </Card.Title>
                   <Card.Text>
                     <p>currency: {account.currency}</p>
                     <p>institution: {account.institution?.name}</p>
                     <p>
-                      current balance:{" "}
+                      current balance: <br />
                       <strong>
                         {account.balance?.current} {account.currency}
                       </strong>
                     </p>
                     <p>
-                      available balance:{" "}
+                      available balance: <br />
                       <strong>
                         {account.balance?.available} {account.currency}
                       </strong>
@@ -163,8 +170,13 @@ const Transactions = () => {
             style={{ padding: "1rem", paddingBottom: 0, fontSize: "0.8rem" }}
           >
             <p>Mock data is available with:</p>
+            <strong>LOW ACTIVITY</strong>
             <p>username: bnk102</p>
             <p>password: low</p>
+            <hr />
+            <strong>HIGH ACTIVITY</strong>
+            <p>username: bnk100</p>
+            <p>password: full</p>
           </div>
           <div style={{ padding: "1rem" }}>
             <FormLinkComponent
@@ -191,7 +203,7 @@ const Transactions = () => {
       {transactions?.length > 0 ? (
         <>
           <h2>Transactions</h2>
-          {transactions.map((transaction) => {
+          {transactions.slice(0, visibleItems).map((transaction) => {
             return (
               <Card
                 style={{
@@ -222,6 +234,11 @@ const Transactions = () => {
         </>
       ) : (
         !loading && <div>No transactions found</div>
+      )}
+      {visibleItems < transactions?.length && (
+        <Button variant="success" onClick={loadMoreItems}>
+          Load more
+        </Button>
       )}
     </div>
   );
