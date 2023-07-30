@@ -37,7 +37,7 @@ const Login = () => {
 
     event.preventDefault();
     const response = await handleLogin(formValues.email, formValues.password);
-    if (response) {
+    if (response?.username) {
       setToken(response.token);
       setUser(response.username);
       navigate("/", { replace: true });
