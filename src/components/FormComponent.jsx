@@ -30,7 +30,7 @@ const FormComponent = ({ values, onChange, onSubmit, disabled }) => {
       </Form.Group>
 
       <Button
-        style={{ marginTop: "1rem" }}
+        style={{ marginTop: "1rem", marginBottom: "1rem" }}
         variant="primary"
         type="submit"
         disabled={disabled}

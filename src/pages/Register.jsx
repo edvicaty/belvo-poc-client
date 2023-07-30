@@ -32,14 +32,15 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     setLoading(true);
 
     event.preventDefault();
-    // You can use the 'formValues' state here or perform any other actions
-    console.log("Form submitted with values:", formValues);
-    const response = handleRegister(formValues);
-    if (response.ok) {
+    const response = await handleRegister(
+      formValues.email,
+      formValues.password
+    );
+    if (response) {
       setToken(response.token);
       setUser(response.username);
       navigate("/", { replace: true });
@@ -66,7 +67,7 @@ const Register = () => {
       )}
       {loading && (
         <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
+          <span className="sr-only"></span>
         </Spinner>
       )}
     </div>
