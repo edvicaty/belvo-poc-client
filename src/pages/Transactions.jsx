@@ -42,18 +42,16 @@ const Transactions = () => {
       const response = await getTransactionsByInstitution(institution);
       console.log("onLoad");
       console.log(response);
-      if (!response) {
+      if (!response?.transactions?.length > 0) {
         setShowModal(true);
         return null;
       }
-      if (response?.transactions?.length > 0) {
-        setLoading(false);
-        setTransactions(response.transactions);
-        setAccounts(response?.accounts);
-        setLoaded(true);
-        setShowModal(false);
-        return true;
-      }
+      setLoading(false);
+      setTransactions(response.transactions);
+      setAccounts(response?.accounts);
+      setLoaded(true);
+      setShowModal(false);
+      return true;
     };
 
     fetchTransactions().catch(console.error);
@@ -172,7 +170,7 @@ const Transactions = () => {
       {institution && (
         <Modal show={showModal} onHide={onHide}>
           <Modal.Header closeButton>
-            <Modal.Title>Choose {institution}</Modal.Title>
+            <Modal.Title>{institution}</Modal.Title>
           </Modal.Header>
           <Modal.Body>Enter your bank credentials to continue</Modal.Body>
           <div
@@ -180,12 +178,12 @@ const Transactions = () => {
           >
             <p>Mock data is available with:</p>
             <strong>LOW ACTIVITY</strong>
-            <p>username: bnk102</p>
-            <p>password: low</p>
+            <p style={{marginBottom: "5px"}}>username: bnk102</p>
+            <p style={{marginBottom: "5px"}}>password: low</p>
             <hr />
             <strong>HIGH ACTIVITY</strong>
-            <p>username: bnk100</p>
-            <p>password: full</p>
+            <p style={{marginBottom: "5px"}}>username: bnk100</p>
+            <p style={{marginBottom: "5px"}}>password: full</p>
           </div>
           <div style={{ padding: "1rem" }}>
             <FormLinkComponent
