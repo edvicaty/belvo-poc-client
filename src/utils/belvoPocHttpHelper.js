@@ -60,4 +60,39 @@ async function registerLink(institution, bankUsername, bankPassword) {
   }
 }
 
-export { handleLogin, handleRegister, getInstitutions, registerLink };
+async function getTransactionsByInstitution(institution) {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/v1/belvo/transactions`, {
+      institution,
+    });
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+async function getAccountsByInstitution(institution) {
+  try {
+    const response = await axios.post(`${BASE_URL}/api/v1/belvo/accounts`, {
+      institution,
+    });
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}
+
+export {
+  handleLogin,
+  handleRegister,
+  getInstitutions,
+  registerLink,
+  getTransactionsByInstitution,
+  getAccountsByInstitution
+};
