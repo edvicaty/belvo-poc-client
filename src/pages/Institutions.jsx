@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getInstitutions, registerLink } from "../utils/belvoPocHttpHelper";
 import { Button, Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const Institutions = () => {
-  const [institutions, setInstitutions] = useState([]);
+  const [institutions, setInstitutions] = useState();
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (loaded) {
@@ -23,12 +25,11 @@ const Institutions = () => {
     fetchData().catch(console.error);
   }, []);
 
-  const handleClick = async () => {
-    const response = await getInstitutions();
-    console.log(response);
-    if (!response) {
-      return;
-    }
+  const handleClick = (institution) => {
+    navigate(`/transactions?institution=${institution.name}`, {
+      replace: true,
+    });
+    return;
   };
 
   return (
@@ -38,11 +39,18 @@ const Institutions = () => {
         Choose the desired institution. Right now only test institutions are
         being shown.
       </p>
-      {institutions.length > 0 &&
-        institutions?.map((institution) => (
+      {institutions?.length > 0 &&
+        institutions.map((institution) => (
           <Card style={{ marginBottom: "2rem", padding: "10px" }}>
-            <Card.Title>{institution.displayName}</Card.Title>
-            <Button variant="secondary">Choose institution</Button>
+            <Card.Title>{institution?.displayName}</Card.Title>
+            <Button
+              onClick={() => {
+                handleClick(institution);
+              }}
+              variant="secondary"
+            >
+              Choose institution
+            </Button>
           </Card>
         ))}
     </div>

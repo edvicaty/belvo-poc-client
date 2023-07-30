@@ -5,6 +5,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Logout from "../pages/Logout";
 import Institutions from "../pages/Institutions";
+import Transactions from "../pages/Transactions";
 import Wrapper from "../components/Wrapper";
 
 const Routes = () => {
@@ -22,8 +23,8 @@ const Routes = () => {
           element: <Institutions />,
         },
         {
-          path: "/profile",
-          element: <div>User Profile</div>,
+          path: "/transactions",
+          element: <Transactions />,
         },
         {
           path: "/logout",
