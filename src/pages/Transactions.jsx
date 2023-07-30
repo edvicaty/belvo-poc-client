@@ -114,6 +114,15 @@ const Transactions = () => {
     setVisibleItems((prevVisibleItems) => prevVisibleItems + 10);
   };
 
+  const parseDate = (dateString) => {
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+    const day = dateObj.getDate().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <div>
       <h1>Transactions {institution}</h1>
@@ -228,6 +237,7 @@ const Transactions = () => {
                 <p>Category: {transaction.category}</p>
                 <p>Status: {transaction.status}</p>
                 <p>Type: {transaction.type}</p>
+                <p>Date: {parseDate(transaction.created_at)}</p>
               </Card>
             );
           })}
