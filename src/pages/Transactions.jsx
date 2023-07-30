@@ -11,6 +11,7 @@ import FormLinkComponent from "../components/FormLinkComponent";
 const Transactions = () => {
   const [showModal, setShowModal] = useState(false);
   const [transactions, setTransactions] = useState();
+  const [accounts, setAccounts] = useState();
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -35,9 +36,10 @@ const Transactions = () => {
         setShowModal(true);
         return null;
       }
-      if (response?.length > 0) {
+      if (response?.transactions?.length > 0) {
         setLoading(false);
-        setTransactions(response);
+        setTransactions(response.transactions);
+        setAccounts(response?.accounts);
         setLoaded(true);
         setShowModal(false);
         return true;
@@ -59,9 +61,10 @@ const Transactions = () => {
     if (!response) {
       return null;
     }
-    if (response?.length > 0) {
+    if (response?.transactions?.length > 0) {
       setLoading(false);
-      setTransactions(response);
+      setTransactions(response?.transactions);
+      setAccounts(response?.accounts);
       setLoaded(true);
       setShowModal(false);
       return true;
@@ -156,6 +159,9 @@ const Transactions = () => {
               </p>
               <p>
                 <strong>{transaction.currency}</strong>
+              </p>
+              <p>
+                <strong>{transaction.account?.type}</strong>
               </p>
               <p>{transaction.category}</p>
               <p>{transaction.status}</p>

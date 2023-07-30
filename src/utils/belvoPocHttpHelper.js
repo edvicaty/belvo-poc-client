@@ -62,11 +62,18 @@ async function registerLink(institution, bankUsername, bankPassword) {
 
 async function getTransactionsByInstitution(institution) {
   try {
-    const response = await axios.post(`${BASE_URL}/api/v1/belvo/transactions`, {
-      institution,
-    });
-    if (response.data) {
-      return response.data;
+    const transactionResponse = await axios.post(
+      `${BASE_URL}/api/v1/belvo/transactions`,
+      {
+        institution,
+      }
+    );
+    const accountsResponse = getAccountsByInstitution(institution);
+    if (transactionResponse.data && accountsResponse.data) {
+      return {
+        transactions: transactionResponse.data,
+        accounts: accountsResponse.data,
+      };
     }
   } catch (error) {
     console.error(error);
@@ -94,5 +101,5 @@ export {
   getInstitutions,
   registerLink,
   getTransactionsByInstitution,
-  getAccountsByInstitution
+  getAccountsByInstitution,
 };
