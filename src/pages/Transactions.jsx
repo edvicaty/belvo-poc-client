@@ -22,7 +22,6 @@ const Transactions = () => {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-  const [page, setPage] = useState(1);
   const [error, setError] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const Transactions = () => {
     bankUsername: "",
     bankPassword: "",
   });
-  const [visibleItems, setVisibleItems] = useState(551);
+  const [visibleItems, setVisibleItems] = useState(10);
   const searchParams = new URLSearchParams(location.search);
   const institution = searchParams.get("institution");
 
@@ -65,13 +64,8 @@ const Transactions = () => {
     return;
   };
 
-  const fetchTransactionsWhenLoaded = async (addPage) => {
-    const pageToFetch = addPage ? page + 1 : page;
-    console.log({ pageToFetch });
-    const response = await getTransactionsByInstitution(
-      institution,
-      pageToFetch
-    );
+  const fetchTransactionsWhenLoaded = async () => {
+    const response = await getTransactionsByInstitution(institution);
     console.log("onSubmit");
     console.log(response);
     if (!response) {
@@ -117,10 +111,6 @@ const Transactions = () => {
   };
 
   const loadMoreItems = async () => {
-    if (visibleItems + 10 >= transactions?.length) {
-      console.log();
-      await fetchTransactionsWhenLoaded(true);
-    }
     setVisibleItems((prevVisibleItems) => prevVisibleItems + 10);
   };
 
@@ -250,9 +240,6 @@ const Transactions = () => {
           Load more
         </Button>
       )}
-
-      <p>{visibleItems}</p>
-      <p>Page {page}</p>
     </div>
   );
 };
