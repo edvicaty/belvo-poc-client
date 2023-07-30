@@ -1,39 +1,36 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  // State to hold the authentication token
-  const [token, setToken_] = useState(localStorage.getItem("token"));
-
-  // Function to set the authentication token
-  const setToken = (newToken) => {
-    setToken_(newToken);
-  };
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(localStorage.getItem("username"));
 
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       localStorage.setItem("token", token);
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-      localStorage.removeItem("token");
+      localStorage.setItem("username", user);
+      return;
     }
-  }, [token]);
+    delete axios.defaults.headers.common["Authorization"];
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    setUser(null);
+  }, [token, user]);
 
-  // Memoized value of the authentication context
-  const contextValue = useMemo(
-    () => ({
-      token,
-      setToken,
-    }),
-    [token]
-  );
-
-  // Provide the authentication context to the children components
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        token,
+        setToken,
+        user,
+        setUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };
 

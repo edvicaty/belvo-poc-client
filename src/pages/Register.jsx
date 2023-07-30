@@ -22,8 +22,8 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Login Page</h1>
-      <Button onClick={handleLogin}>login</Button>
+      <h1>Register Page</h1>
+      <Button onClick={handleLogin}>Register</Button>
     </div>
   );
 };
