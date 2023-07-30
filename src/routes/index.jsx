@@ -4,6 +4,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Logout from "../pages/Logout";
+import Institutions from "../pages/Institutions";
 import Wrapper from "../components/Wrapper";
 
 const Routes = () => {
@@ -14,11 +15,11 @@ const Routes = () => {
   const routesForAuthenticatedOnly = [
     {
       path: "/",
-      element: <ProtectedRoute />, // Wrap the component in ProtectedRoute
+      element: <ProtectedRoute />,
       children: [
         {
           path: "",
-          element: <div>User Home Page for Authenticated</div>,
+          element: <Institutions />,
         },
         {
           path: "/profile",
