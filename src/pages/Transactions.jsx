@@ -188,9 +188,10 @@ const Transactions = () => {
           </Modal.Footer>
         </Modal>
       )}
-      <h2>Transactions</h2>
-      {transactions?.length > 0
-        ? transactions.map((transaction) => {
+      {transactions?.length > 0 ? (
+        <>
+          <h2>Transactions</h2>
+          {transactions.map((transaction) => {
             return (
               <Card
                 style={{
@@ -217,8 +218,11 @@ const Transactions = () => {
                 <p>Type: {transaction.type}</p>
               </Card>
             );
-          })
-        : !loading && <div>No transactions found</div>}
+          })}
+        </>
+      ) : (
+        !loading && <div>No transactions found</div>
+      )}
     </div>
   );
 };
