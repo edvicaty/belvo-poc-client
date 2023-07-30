@@ -4,7 +4,14 @@ import {
   getTransactionsByInstitution,
   registerLink,
 } from "../utils/belvoPocHttpHelper";
-import { Alert, Button, Card, Modal, Spinner } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Card,
+  CardGroup,
+  Modal,
+  Spinner,
+} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import FormLinkComponent from "../components/FormLinkComponent";
 
@@ -105,7 +112,38 @@ const Transactions = () => {
   return (
     <div>
       <h1>Transactions {institution}</h1>
-      {loading && (
+      {accounts?.length > 0 && (
+        <div style={{ paddingTop: "1rem", paddingBottom: "2rem" }}>
+          <h2>Accounts Balance</h2>
+          <CardGroup>
+            {accounts.map((account) => {
+              return (
+                <Card style={{ padding: "1rem" }}>
+                  <Card.Title>{account.category}</Card.Title>
+                  <Card.Text>
+                    <p>currency: {account.currency}</p>
+                    <p>institution: {account.institution?.name}</p>
+                    <p>
+                      current balance:{" "}
+                      <strong>
+                        {account.balance?.current} {account.currency}
+                      </strong>
+                    </p>
+                    <p>
+                      available balance:{" "}
+                      <strong>
+                        {account.balance?.available} {account.currency}
+                      </strong>
+                    </p>
+                  </Card.Text>
+                </Card>
+              );
+            })}
+          </CardGroup>
+        </div>
+      )}
+
+      {loading && !transactions?.length > 0 && (
         <Spinner animation="border" role="status">
           <span className="sr-only"></span>
         </Spinner>
@@ -150,6 +188,7 @@ const Transactions = () => {
           </Modal.Footer>
         </Modal>
       )}
+      <h2>Transactions</h2>
       {transactions?.length > 0
         ? transactions.map((transaction) => {
             return (
@@ -161,20 +200,21 @@ const Transactions = () => {
                 }}
               >
                 <p>
-                  <strong>{transaction.description}</strong>
+                  <strong style={{ color: "blue" }}>
+                    Description: {transaction.description}
+                  </strong>
                 </p>
                 <p>
-                  <strong>{transaction.amount}</strong>
+                  <strong>
+                    Amount: {transaction.amount} {transaction.currency}
+                  </strong>
                 </p>
                 <p>
-                  <strong>{transaction.currency}</strong>
+                  <strong>Account Type: {transaction.account?.type}</strong>
                 </p>
-                <p>
-                  <strong>{transaction.account?.type}</strong>
-                </p>
-                <p>{transaction.category}</p>
-                <p>{transaction.status}</p>
-                <p>{transaction.type}</p>
+                <p>Category: {transaction.category}</p>
+                <p>Status: {transaction.status}</p>
+                <p>Type: {transaction.type}</p>
               </Card>
             );
           })
