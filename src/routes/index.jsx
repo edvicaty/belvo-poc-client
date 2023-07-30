@@ -7,19 +7,8 @@ import Logout from "../pages/Logout";
 const Routes = () => {
   const { token } = useAuth();
 
-  // Define public routes accessible to all users
-  const routesForPublic = [
-    {
-      path: "/service",
-      element: <div>Service Page</div>,
-    },
-    {
-      path: "/about-us",
-      element: <div>About Us</div>,
-    },
-  ];
+  const routesForPublic = [];
 
-  // Define routes accessible only to authenticated users
   const routesForAuthenticatedOnly = [
     {
       path: "/",
@@ -41,7 +30,6 @@ const Routes = () => {
     },
   ];
 
-  // Define routes accessible only to non-authenticated users
   const routesForNotAuthenticatedOnly = [
     {
       path: "/",
