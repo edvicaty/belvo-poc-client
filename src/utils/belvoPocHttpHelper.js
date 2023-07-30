@@ -60,12 +60,13 @@ async function registerLink(institution, bankUsername, bankPassword) {
   }
 }
 
-async function getTransactionsByInstitution(institution) {
+async function getTransactionsByInstitution(institution, page) {
   try {
     const transactionResponse = await axios.post(
       `${BASE_URL}/api/v1/belvo/transactions`,
       {
         institution,
+        page,
       }
     );
     const accountsResponse = await getAccountsByInstitution(institution);
