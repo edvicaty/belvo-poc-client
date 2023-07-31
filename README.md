@@ -9,7 +9,7 @@ For more information consult the [server repository](https://github.com/edvicaty
 
 ## Deployment
 
-(Frontend site)[http://belvo-poc-vicati.s3-website.us-east-2.amazonaws.com/]
+[Frontend site](http://belvo-poc-vicati.s3-website.us-east-2.amazonaws.com/)
 
 URL may not be valid. This was deployed as an static asset on S3.
 
