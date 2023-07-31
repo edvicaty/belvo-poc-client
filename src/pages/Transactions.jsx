@@ -14,6 +14,7 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import FormLinkComponent from "../components/FormLinkComponent";
+import { useAuth } from "../provider/authProvider";
 
 const Transactions = () => {
   const [showModal, setShowModal] = useState(false);
@@ -32,6 +33,7 @@ const Transactions = () => {
   const [visibleItems, setVisibleItems] = useState(10);
   const searchParams = new URLSearchParams(location.search);
   const institution = searchParams.get("institution");
+  const { token } = useAuth();
 
   useEffect(() => {
     setLoading(true);
@@ -39,7 +41,7 @@ const Transactions = () => {
       return;
     }
     const fetchTransactions = async () => {
-      const response = await getTransactionsByInstitution(institution);
+      const response = await getTransactionsByInstitution(institution, token);
       console.log("onLoad");
       console.log(response);
       if (!response?.transactions?.length > 0) {
@@ -63,7 +65,7 @@ const Transactions = () => {
   };
 
   const fetchTransactionsWhenLoaded = async () => {
-    const response = await getTransactionsByInstitution(institution);
+    const response = await getTransactionsByInstitution(institution, token);
     console.log("onSubmit");
     console.log(response);
     if (!response) {
@@ -86,7 +88,8 @@ const Transactions = () => {
     const response = await registerLink(
       institution,
       formValues.bankUsername,
-      formValues.bankPassword
+      formValues.bankPassword,
+      token
     );
     if (response) {
       await fetchTransactionsWhenLoaded();
@@ -178,12 +181,12 @@ const Transactions = () => {
           >
             <p>Mock data is available with:</p>
             <strong>LOW ACTIVITY</strong>
-            <p style={{marginBottom: "5px"}}>username: bnk102</p>
-            <p style={{marginBottom: "5px"}}>password: low</p>
+            <p style={{ marginBottom: "5px" }}>username: bnk102</p>
+            <p style={{ marginBottom: "5px" }}>password: low</p>
             <hr />
             <strong>HIGH ACTIVITY</strong>
-            <p style={{marginBottom: "5px"}}>username: bnk100</p>
-            <p style={{marginBottom: "5px"}}>password: full</p>
+            <p style={{ marginBottom: "5px" }}>username: bnk100</p>
+            <p style={{ marginBottom: "5px" }}>password: full</p>
           </div>
           <div style={{ padding: "1rem" }}>
             <FormLinkComponent

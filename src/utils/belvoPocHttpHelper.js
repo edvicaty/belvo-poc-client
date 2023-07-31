@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuth } from "../provider/authProvider";
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -34,7 +35,9 @@ async function handleRegister(username, password) {
 
 async function getInstitutions() {
   try {
-    const response = await axios.get(`${BASE_URL}/api/v1/belvo/institutions`);
+    const response = await axios.get(`${BASE_URL}/api/v1/belvo/institutions`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
     if (response.data) {
       return response.data;
     }
@@ -46,11 +49,17 @@ async function getInstitutions() {
 
 async function registerLink(institution, bankUsername, bankPassword) {
   try {
-    const response = await axios.post(`${BASE_URL}/api/v1/belvo/link`, {
-      institution,
-      bankUsername,
-      bankPassword,
-    });
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/belvo/link`,
+      {
+        institution,
+        bankUsername,
+        bankPassword,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
     if (response.data) {
       return response.data;
     }
@@ -66,6 +75,9 @@ async function getTransactionsByInstitution(institution) {
       `${BASE_URL}/api/v1/belvo/transactions`,
       {
         institution,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       }
     );
     const accountsResponse = await getAccountsByInstitution(institution);
@@ -83,9 +95,15 @@ async function getTransactionsByInstitution(institution) {
 
 async function getAccountsByInstitution(institution) {
   try {
-    const response = await axios.post(`${BASE_URL}/api/v1/belvo/accounts`, {
-      institution,
-    });
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/belvo/accounts`,
+      {
+        institution,
+      },
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      }
+    );
     if (response.data) {
       return response.data;
     }

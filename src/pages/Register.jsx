@@ -38,7 +38,8 @@ const Register = () => {
     event.preventDefault();
     const response = await handleRegister(
       formValues.email,
-      formValues.password
+      formValues.password,
+      token
     );
     if (response?.username) {
       setToken(response.token);

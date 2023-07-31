@@ -36,7 +36,11 @@ const Login = () => {
     setLoading(true);
 
     event.preventDefault();
-    const response = await handleLogin(formValues.email, formValues.password);
+    const response = await handleLogin(
+      formValues.email,
+      formValues.password,
+      token
+    );
     if (response?.username) {
       setToken(response.token);
       setUser(response.username);

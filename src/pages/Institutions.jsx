@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { getInstitutions, registerLink } from "../utils/belvoPocHttpHelper";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../provider/authProvider";
 
 const Institutions = () => {
   const [institutions, setInstitutions] = useState();
   const [loaded, setLoaded] = useState(false);
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   useEffect(() => {
     if (loaded) {
       return;
     }
     const fetchData = async () => {
-      const response = await getInstitutions();
+      const response = await getInstitutions(token);
       if (!response) {
         return;
       }
