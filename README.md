@@ -5,7 +5,7 @@ to:
 - Create a User and store different Belvo Links
 - Fetch Account and Transaction data
 
-For more information consult the (server repository)[https://github.com/edvicaty/belvo-poc]
+For more information consult the [server repository](https://github.com/edvicaty/belvo-poc)
 
 ## Deployment
 
